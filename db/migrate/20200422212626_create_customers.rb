@@ -6,6 +6,8 @@ class CreateCustomers < ActiveRecord::Migration[6.0]
       t.bigint :document_number, null: false
       t.bigint :phone_number, null: false
       t.string :address, null: false
+
+      t.timestamps
     end
   end
 end

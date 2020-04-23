@@ -6,6 +6,8 @@ class CreateProducts < ActiveRecord::Migration[6.0]
       t.integer :units_available, null: false, default: 0
       t.decimal :unit_price, null: false
       t.boolean :hidden, null: false, default: false
+
+      t.timestamps
     end
   end
 end
