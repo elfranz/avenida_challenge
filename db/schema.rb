@@ -21,6 +21,8 @@ ActiveRecord::Schema.define(version: 2020_04_23_210740) do
     t.bigint "document_number", null: false
     t.bigint "phone_number", null: false
     t.string "address", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "order_products", force: :cascade do |t|
@@ -46,6 +48,8 @@ ActiveRecord::Schema.define(version: 2020_04_23_210740) do
     t.integer "units_available", default: 0, null: false
     t.decimal "unit_price", null: false
     t.boolean "hidden", default: false, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
 end
