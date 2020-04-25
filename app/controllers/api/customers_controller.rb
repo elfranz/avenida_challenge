@@ -1,6 +1,5 @@
 module Api
   class CustomersController < ApplicationController
-
     # TODO: add pagination to improve performance
     def index
       customers = Customer.all
@@ -14,7 +13,7 @@ module Api
 
     def create
       customer = Customer.new(create_params)
-      return render status: :bad_request, json: { error: format_errors(customer) } unless
+      return invalid_customer_error(customer) unless
         customer.save
 
       render status: :created, json: customer
@@ -23,14 +22,16 @@ module Api
     def update
       customer = Customer.find(params[:id])
       customer.update!(update_params)
-      # TODO: Messages should be internationalized with I18n, we are running out of time though
+      # TODO: Messages should be internationalized with I18n,
+      # we are running out of time though
       render status: :ok, json: { message: 'Data was successfully updated.' }
     end
 
     def destroy
       customer = Customer.find(params[:id])
       customer.destroy!
-      # TODO: Messages should be internationalized with I18n, we are running out of time though
+      # TODO: Messages should be internationalized with I18n,
+      # we are running out of time though
       render status: :ok, json: { message: 'Customer successfully deleted.' }
     end
 
@@ -40,6 +41,10 @@ module Api
       required = %i[email name document_number phone_number address]
       required.each { |required_param| params.require(required_param) }
       params.permit(required)
+    end
+
+    def invalid_customer_error(customer)
+      render status: :bad_request, json: { error: format_errors(customer) }
     end
 
     def update_params

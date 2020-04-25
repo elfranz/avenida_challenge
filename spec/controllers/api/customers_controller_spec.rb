@@ -16,7 +16,7 @@ describe Api::CustomersController do
 
     it 'responds with customers information' do
       expect(response_body.first.keys)
-        .to eq(%w[id email name document_number phone_number address]) 
+        .to eq(%w[id email name document_number phone_number address])
     end
   end
 
@@ -134,12 +134,13 @@ describe Api::CustomersController do
         end
 
         it 'does not create a user' do
-          expect { create_request }.not_to change{ Customer.count }
+          expect { create_request }.not_to(change { Customer.count })
         end
 
         it 'responds with array pointing out the possible errors' do
           create_request
-          expect(response_body['error']).to eq(["Document number is not a number."])
+          expect(response_body['error'])
+            .to eq(['Document number is not a number.'])
         end
       end
 
@@ -161,12 +162,13 @@ describe Api::CustomersController do
         end
 
         it 'does not create a user' do
-          expect { create_request }.not_to change{ Customer.count }
+          expect { create_request }.not_to(change { Customer.count })
         end
 
         it 'responds with array pointing out the possible errors' do
           create_request
-          expect(response_body['error']).to eq(["Phone number is not a number."])
+          expect(response_body['error'])
+            .to eq(['Phone number is not a number.'])
         end
       end
     end
@@ -174,7 +176,9 @@ describe Api::CustomersController do
     context 'with missing required param' do
       let(:customer_params) { attributes_for(:customer) }
       let(:create_request) do
-        post :create, params: customer_params.except(customer_params.keys.sample)
+        post :create, params: customer_params.except(
+          customer_params.keys.sample
+        )
       end
 
       it 'fails' do
@@ -183,7 +187,7 @@ describe Api::CustomersController do
       end
 
       it 'does not create a user' do
-        expect { create_request }.not_to change{ Customer.count }
+        expect { create_request }.not_to(change { Customer.count })
       end
 
       it 'responds with an error message' do
@@ -217,29 +221,34 @@ describe Api::CustomersController do
 
         it 'responds with message' do
           update_request
-          expect(response_body['message']).to eq('Data was successfully updated.')
+          expect(response_body['message'])
+            .to eq('Data was successfully updated.')
         end
 
         it 'updates the customer\'s email' do
-          expect { update_request }.to change { customer.reload.email }.to (params[:email])
+          expect { update_request }.to change { customer.reload.email }
+            .to(params[:email])
         end
 
         it 'updates the customer\'s name' do
-          expect { update_request }.to change { customer.reload.name }.to (params[:name])
+          expect { update_request }.to change { customer.reload.name }
+            .to(params[:name])
         end
 
         it 'updates the customer\'s document number' do
-          expect { update_request }.to change { customer.reload.document_number }
-            .to (params[:document_number])
+          expect { update_request }
+            .to change { customer.reload.document_number }
+            .to(params[:document_number])
         end
 
         it 'updates the customer\'s phone number' do
           expect { update_request }.to change { customer.reload.phone_number }
-            .to (params[:phone_number])
+            .to(params[:phone_number])
         end
 
         it 'updates the customer\'s address' do
-          expect { update_request }.to change { customer.reload.address }.to (params[:address])
+          expect { update_request }.to change { customer.reload.address }
+            .to(params[:address])
         end
       end
 
@@ -261,27 +270,36 @@ describe Api::CustomersController do
 
         it 'responds with message' do
           update_request
-          expect(response_body['message']).to eq('Data was successfully updated.')
+          expect(response_body['message'])
+            .to eq('Data was successfully updated.')
         end
 
         it 'updates the customer\'s email' do
-          expect { update_request }.to change { customer.reload.email }.to (params[:email])
+          expect { update_request }.to change { customer.reload.email }
+            .to(params[:email])
         end
 
         it 'updates the customer\'s name' do
-          expect { update_request }.to change { customer.reload.name }.to (params[:name])
+          expect { update_request }.to change { customer.reload.name }
+            .to(params[:name])
         end
 
         it 'does not update the customer\'s document number' do
-          expect { update_request }.not_to change { customer.reload.document_number }
+          expect { update_request }.not_to(
+            change { customer.reload.document_number }
+          )
         end
 
         it 'does not update the customer\'s phone number' do
-          expect { update_request }.not_to change { customer.reload.phone_number }
+          expect { update_request }.not_to(
+            change { customer.reload.phone_number }
+          )
         end
 
         it 'does not update the customer\'s address' do
-          expect { update_request }.not_to change { customer.reload.address }
+          expect { update_request }.not_to(
+            change { customer.reload.address }
+          )
         end
       end
     end
@@ -322,7 +340,7 @@ describe Api::CustomersController do
       end
 
       it 'deletes the customer' do
-        expect { delete_request }.to change { Customer.count }.by (-1) 
+        expect { delete_request }.to change { Customer.count }.by(-1)
       end
     end
 
@@ -337,8 +355,8 @@ describe Api::CustomersController do
       end
 
       it 'does not delete the customer' do
-        expect { delete_request }.not_to change { Customer.count }
+        expect { delete_request }.not_to(change { Customer.count })
       end
-    end 
+    end
   end
 end

@@ -5,7 +5,8 @@ class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::RecordNotFound, with: :not_found_empty_response
 
   def missing_parameter
-    # TODO: Messages should be internationalized with I18n, we are running out of time though
+    # TODO: Messages should be internationalized with I18n,
+    # we are running out of time though
     render status: :bad_request,
            json: { error: 'Missing required param.' }
   end
@@ -15,10 +16,11 @@ class ApplicationController < ActionController::Base
   end
 
   def format_errors(entity)
-    # format model errors for clearer response, builds array out of all the validation errors
+    # format model errors for clearer response,
+    # builds array out of all the validation errors
     errors = []
     entity.errors.each do |attr, err|
-      errors << "#{attr.to_s.gsub('_', ' ').capitalize()} #{err}."
+      errors << "#{attr.to_s.gsub('_', ' ').capitalize} #{err}."
     end
     errors
   end
