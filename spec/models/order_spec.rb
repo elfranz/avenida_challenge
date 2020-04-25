@@ -11,7 +11,7 @@ describe Order do
     subject do
       described_class.new(customer_id: nil)
     end
-    
+
     it 'should not be saved' do
       expect(subject.save).to be(false)
     end

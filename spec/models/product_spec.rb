@@ -12,22 +12,22 @@ describe Product do
 
   it { is_expected.to be_valid }
 
-  it "is not valid without a title" do
+  it 'is not valid without a title' do
     subject.title = nil
     expect(subject).to_not be_valid
   end
 
-  it "is not valid without units_available" do
+  it 'is not valid without units_available' do
     subject.units_available = nil
     expect(subject).to_not be_valid
   end
 
-  it "is not valid without unit_price" do
+  it 'is not valid without unit_price' do
     subject.unit_price = nil
     expect(subject).to_not be_valid
   end
 
-  it "is not valid without hidden" do
+  it 'is not valid without hidden' do
     subject.hidden = nil
     expect(subject).to_not be_valid
   end
