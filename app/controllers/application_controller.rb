@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::RecordNotFound, with: :not_found_empty_response
 
   def missing_parameter
-    # Messages should be internationalized with I18n, we are running out of time though
+    # TODO: Messages should be internationalized with I18n, we are running out of time though
     render status: :bad_request,
            json: { error: 'Missing required param.' }
   end

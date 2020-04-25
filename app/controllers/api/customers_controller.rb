@@ -23,13 +23,14 @@ module Api
     def update
       customer = Customer.find(params[:id])
       customer.update!(update_params)
-      # Messages should be internationalized with I18n, we are running out of time though
+      # TODO: Messages should be internationalized with I18n, we are running out of time though
       render status: :ok, json: { message: 'Data was successfully updated.' }
     end
 
     def destroy
       customer = Customer.find(params[:id])
       customer.destroy!
+      # TODO: Messages should be internationalized with I18n, we are running out of time though
       render status: :ok, json: { message: 'Customer successfully deleted.' }
     end
 
