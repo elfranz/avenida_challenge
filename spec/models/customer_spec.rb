@@ -37,6 +37,16 @@ describe Customer do
     expect(subject).to_not be_valid
   end
 
+  it "is not valid without a numeric document number" do
+    subject.document_number = 'string'
+    expect(subject).to_not be_valid
+  end
+
+  it "is not valid without a numeric phone number" do
+    subject.phone_number = 'string'
+    expect(subject).to_not be_valid
+  end
+
   context 'with factory' do
     subject(:customer) do
       create(:customer)
