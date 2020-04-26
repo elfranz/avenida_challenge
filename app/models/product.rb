@@ -4,4 +4,5 @@ class Product < ApplicationRecord
 
   validates :title, :units_available, :unit_price, presence: true
   validates :hidden, inclusion: { in: [true, false] }
+  validates_numericality_of :units_available, :unit_price
 end

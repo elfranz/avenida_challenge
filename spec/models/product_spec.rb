@@ -32,6 +32,16 @@ describe Product do
     expect(subject).to_not be_valid
   end
 
+  it 'is not valid without a numeric units available' do
+    subject.units_available = 'string'
+    expect(subject).to_not be_valid
+  end
+
+  it 'is not valid without a numeric unit price' do
+    subject.unit_price = 'string'
+    expect(subject).to_not be_valid
+  end
+
   context 'with factory' do
     subject(:product) do
       create(:product)

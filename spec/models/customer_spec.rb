@@ -47,6 +47,21 @@ describe Customer do
     expect(subject).to_not be_valid
   end
 
+  context 'when trying to create a customer with existen document number' do
+    before do
+      described_class.create!(
+        email: Faker::Internet.email, name: Faker::Name.name_with_middle,
+        document_number: customer.document_number,
+        phone_number: Faker::Number.number(digits: 11),
+        address: Faker::Address.street_address
+      )
+    end
+
+    it 'is not valid if the document number is not unique' do
+      expect(subject).to be_invalid
+    end
+  end
+
   context 'with factory' do
     subject(:customer) do
       create(:customer)

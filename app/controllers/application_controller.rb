@@ -15,6 +15,12 @@ class ApplicationController < ActionController::Base
     head :not_found
   end
 
+  def invalid_record_error(entity)
+    render status: :bad_request, json: { error: format_errors(entity) }
+  end
+
+  private
+
   def format_errors(entity)
     # format model errors for clearer response,
     # builds array out of all the validation errors
