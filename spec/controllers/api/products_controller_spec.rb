@@ -319,7 +319,7 @@ describe Api::ProductsController do
           expect(response).to have_http_status(:bad_request)
         end
 
-        it 'does not update a user' do
+        it 'does not update a product' do
           expect { update_request }.not_to(change { Product.count })
         end
 
