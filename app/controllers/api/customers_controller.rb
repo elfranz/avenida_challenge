@@ -13,7 +13,7 @@ module Api
 
     def create
       customer = Customer.new(create_params)
-      return invalid_customer_error(customer) unless
+      return invalid_record_error(customer) unless
         customer.save
 
       render status: :created, json: customer
@@ -21,7 +21,10 @@ module Api
 
     def update
       customer = Customer.find(params[:id])
-      customer.update!(update_params)
+      customer.assign_attributes(update_params)
+      return invalid_record_error(customer) unless
+        customer.save
+
       # TODO: Messages should be internationalized with I18n,
       # we are running out of time though
       render status: :ok, json: { message: 'Data was successfully updated.' }
@@ -41,10 +44,6 @@ module Api
       required = %i[email name document_number phone_number address]
       required.each { |required_param| params.require(required_param) }
       params.permit(required)
-    end
-
-    def invalid_customer_error(customer)
-      render status: :bad_request, json: { error: format_errors(customer) }
     end
 
     def update_params

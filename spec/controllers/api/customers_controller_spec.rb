@@ -78,7 +78,7 @@ describe Api::CustomersController do
         expect(response).to have_http_status(:created)
       end
 
-      it 'creates a user' do
+      it 'creates a customer' do
         expect { create_request }.to change{ Customer.count }.by(1)
       end
 
@@ -133,7 +133,7 @@ describe Api::CustomersController do
           expect(response).to have_http_status(:bad_request)
         end
 
-        it 'does not create a user' do
+        it 'does not create a customer' do
           expect { create_request }.not_to(change { Customer.count })
         end
 
@@ -161,7 +161,7 @@ describe Api::CustomersController do
           expect(response).to have_http_status(:bad_request)
         end
 
-        it 'does not create a user' do
+        it 'does not create a customer' do
           expect { create_request }.not_to(change { Customer.count })
         end
 
@@ -169,6 +169,35 @@ describe Api::CustomersController do
           create_request
           expect(response_body['error'])
             .to eq(['Phone number is not a number.'])
+        end
+      end
+
+      context 'when sending an existent document_number' do
+        let!(:customer) { create(:customer) }
+        let(:customer_params) do
+          {
+            email: Faker::Internet.email,
+            name: Faker::Name.name_with_middle,
+            document_number: customer.document_number,
+            phone_number: Faker::Number.number(digits: 11),
+            address: Faker::Address.street_address
+          }
+        end
+        let(:create_request) { post :create, params: customer_params }
+
+        it 'fails' do
+          create_request
+          expect(response).to have_http_status(:bad_request)
+        end
+
+        it 'does not create a customer' do
+          expect { create_request }.not_to(change { Customer.count })
+        end
+
+        it 'responds with array pointing out the possible errors' do
+          create_request
+          expect(response_body['error'])
+            .to eq(['Document number has already been taken.'])
         end
       end
     end
@@ -186,7 +215,7 @@ describe Api::CustomersController do
         expect(response).to have_http_status(:bad_request)
       end
 
-      it 'does not create a user' do
+      it 'does not create a customer' do
         expect { create_request }.not_to(change { Customer.count })
       end
 
@@ -300,6 +329,87 @@ describe Api::CustomersController do
           expect { update_request }.not_to(
             change { customer.reload.address }
           )
+        end
+      end
+    end
+
+    context 'with invalid parameters' do
+      context 'when not sending a numeric document number' do
+        let!(:customer) { create(:customer) }
+        let(:params) do
+          {
+            id: customer.id,
+            document_number: 'string'
+          }
+        end
+        let(:update_request) { put :update, params: params }
+
+        it 'fails' do
+          update_request
+          expect(response).to have_http_status(:bad_request)
+        end
+
+        it 'does not update the document number' do
+          expect { update_request }.not_to(change { customer.document_number })
+        end
+
+        it 'responds with array pointing out the possible errors' do
+          update_request
+          expect(response_body['error'])
+            .to eq(['Document number is not a number.'])
+        end
+      end
+
+      context 'when not sending a numeric phone number' do
+        let!(:customer) { create(:customer) }
+        let(:params) do
+          {
+            id: customer.id,
+            phone_number: 'string'
+          }
+        end
+        let(:update_request) { put :update, params: params }
+
+        it 'fails' do
+          update_request
+          expect(response).to have_http_status(:bad_request)
+        end
+
+        it 'does not update the document number' do
+          expect { update_request }.not_to(change { customer.document_number })
+        end
+
+        it 'responds with array pointing out the possible errors' do
+          update_request
+          expect(response_body['error'])
+            .to eq(['Phone number is not a number.'])
+        end
+      end
+
+      context 'when sending an existent document number' do
+        let!(:customer) { create(:customer) }
+        let!(:other_customer) { create(:customer) }
+        let(:params) do
+          {
+            id: customer.id,
+            document_number: other_customer.document_number
+          }
+        end
+        let(:update_request) { put :update, params: params }
+
+        it 'fails' do
+          update_request
+          expect(response).to have_http_status(:bad_request)
+        end
+
+        it 'does not update the document number' do
+          expect { update_request }.not_to(change { customer.document_number })
+        end
+
+        it 'responds with array pointing out the possible errors' do
+          update_request
+          expect(response_body['error'])
+            .to eq(['Document number has already been taken.'])
         end
       end
     end
