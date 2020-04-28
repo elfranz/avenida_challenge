@@ -17,7 +17,7 @@ customer = Customer.create(
 product = Product.create(
   title: Faker::Beer.brand,
   description: Faker::Beer.style,
-  units_available: Faker::Number.number(digits: 3),
+  units_available: Faker::Number.number(digits: 5),
   unit_price: Faker::Number.decimal(l_digits: 4, r_digits: 2),
   hidden: false
 )
@@ -35,5 +35,5 @@ order = Order.create(
 )
 
 OrderProduct.create(
-  product: product, order: order, quantity: product.units_available - 1
+  product: product, order: order, quantity: product.units_available - 100
 )

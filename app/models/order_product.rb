@@ -8,7 +8,8 @@ class OrderProduct < ApplicationRecord
   validate :quantity_available
   validates_associated :product
 
-  before_save :subract_units_to_product
+  before_create :subract_units_to_product
+  before_update :add_previous_units_to_product
 
   def product_available
     return if product.blank?
@@ -26,6 +27,11 @@ class OrderProduct < ApplicationRecord
   private
 
   def subract_units_to_product
+    product.update(units_available: product.units_available - quantity)
+  end
+
+  def add_previous_units_to_product
+    product.update(units_available: product.units_available + quantity_was)
     product.update(units_available: product.units_available - quantity)
   end
 end
