@@ -18,8 +18,8 @@ module Api
     end
 
     def update
-      order = update_order(require_update_params)
-      render status: :ok, json: order
+      update_order(require_update_params)
+      render status: :ok, json: { message: 'Data was successfully updated.' }
     end
 
     def destroy
@@ -72,7 +72,7 @@ module Api
       Order.find(update_params[:id])
       ActiveRecord::Base.transaction do
         update_params[:order][:products].each do |product|
-          next update_order_product(product[:quantity]) if
+          next @order_product.update!(quantity: product[:quantity]) if
             order_product_exists?(update_params[:id], product[:id])
 
           OrderProduct.create!(
@@ -81,10 +81,6 @@ module Api
           )
         end
       end
-    end
-
-    def update_order_product(quantity)
-      @order_product.update!(quantity: quantity)
     end
 
     def order_product_exists?(order_id, product_id)

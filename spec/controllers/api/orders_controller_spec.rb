@@ -55,7 +55,8 @@ describe Api::OrdersController do
       end
 
       # -----------------------------------------------------------------------
-      # This is weird, order products are not being returned                  |
+      # This is weird, order products are not being returned,                 |
+      # serializer doesn\'t seem to be working here                           |
       # I tested the endpoint and behaves as expected.                        |
       # Will leave these commented until I find some time to                  |
       # find the solution.                                                    |
@@ -387,6 +388,11 @@ describe Api::OrdersController do
 
     it 'creates the inexistent order product' do
       expect { update_request }.to change { OrderProduct.count }.by(1)
+    end
+
+    it 'responds with message' do
+      update_request
+      expect(response_body['message']).to eq('Data was successfully updated.')
     end
 
     context 'when the order does not exist' do
