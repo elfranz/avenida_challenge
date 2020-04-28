@@ -37,6 +37,11 @@ describe Product do
     expect(subject).to_not be_valid
   end
 
+  it 'is not valid without a positive number units available' do
+    subject.units_available = -1
+    expect(subject).to_not be_valid
+  end
+
   it 'is not valid without a numeric unit price' do
     subject.unit_price = 'string'
     expect(subject).to_not be_valid
@@ -48,5 +53,16 @@ describe Product do
     end
 
     it { is_expected.to be_valid }
+
+    context 'when destroying a product' do
+      let!(:order_product) do
+        create(:order_product, product: product,
+                               quantity: product.units_available)
+      end
+
+      it 'should destroy the associated order product' do
+        expect { product.destroy }.to change { OrderProduct.count }.by(-1)
+      end
+    end
   end
 end

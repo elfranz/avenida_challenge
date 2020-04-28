@@ -4,8 +4,6 @@ class CreateOrderProducts < ActiveRecord::Migration[6.0]
       t.belongs_to :order
       t.belongs_to :product
       t.integer :quantity, null: false
-
-      t.timestamps
     end
   end
 end
