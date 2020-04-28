@@ -19,5 +19,3 @@ POSTMAN DOCS AND COLLECTION: https://documenter.getpostman.com/view/11207309/Szf
 5 - Create database and run migrations with: bundle exec rake db:create db:migrate
 
 6 - If you're going to test the API with the collection, seed the database with: bundle exec rake db:seed
-
-7
