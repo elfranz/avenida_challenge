@@ -6,7 +6,7 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-Customer.create(
+customer = Customer.create(
   email: Faker::Internet.email,
   name: Faker::Name.name_with_middle,
   document_number: Faker::Number.number(digits: 8),
@@ -14,10 +14,26 @@ Customer.create(
   address: Faker::Address.street_address
 )
 
-Product.create(
+product = Product.create(
   title: Faker::Beer.brand,
   description: Faker::Beer.style,
   units_available: Faker::Number.number(digits: 3),
   unit_price: Faker::Number.decimal(l_digits: 4, r_digits: 2),
   hidden: false
+)
+
+another_product = Product.create(
+  title: Faker::Beer.brand,
+  description: Faker::Beer.style,
+  units_available: Faker::Number.number(digits: 3),
+  unit_price: Faker::Number.decimal(l_digits: 4, r_digits: 2),
+  hidden: false
+)
+
+order = Order.create(
+  customer: customer
+)
+
+OrderProduct.create(
+  product: product, order: order, quantity: product.units_available - 1
 )
