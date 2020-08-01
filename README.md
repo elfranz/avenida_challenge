@@ -1,6 +1,7 @@
 # README
 
 POSTMAN DOCS AND COLLECTION: https://documenter.getpostman.com/view/11207309/SzfDw4mb
+(On the top right click "Run in Postman" to import the collection)
 
 1 - Install Rbenv. https://github.com/rbenv/rbenv. Ruby version -> 2.7.0p0
 
